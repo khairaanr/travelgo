@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travelgo/ui/widgets/custom_text_form_field.dart';
 
+import '../../../services/user_service.dart';
+import '../../../shared/api_response.dart';
 import '../../../shared/theme.dart';
 import '../../widgets/role_title.dart';
 import '../../widgets/title.dart';
@@ -13,6 +15,24 @@ class VendorSignUpPage extends StatefulWidget {
 }
 
 class _VendorSignUpPageState extends State<VendorSignUpPage> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController name = TextEditingController();
+  TextEditingController usn = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pw = TextEditingController();
+  TextEditingController cpw = TextEditingController();
+
+  Future _register() async {
+    ApiResponse res = await register(name.text, email.text, pw.text, usn.text, "VENDOR");
+
+    if (res.error == null) {
+      Navigator.pushNamed(context, '/vendor-login');
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${res.error}")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget inputSection() {
@@ -20,12 +40,12 @@ class _VendorSignUpPageState extends State<VendorSignUpPage> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         margin: EdgeInsets.only(top: 30),
         child: Column(
-          children: const [
-            CustomTextFormField(title: "Name", hintText: "Your Name"),
-            CustomTextFormField(title: "Username", hintText: "Your Username"),
-            CustomTextFormField(title: "Email Address", hintText: "Your Email Address"),
-            CustomTextFormField(title: "Password", hintText: "Enter Password", isHidden: true,),
-            CustomTextFormField(title: "Confirm Password", hintText: "Re-enter Password", isHidden: true,)
+          children: [
+            CustomTextFormField(title: "Name", hintText: "Your Name", controller: name,),
+            CustomTextFormField(title: "Username", hintText: "Your Username", controller: usn,),
+            CustomTextFormField(title: "Email Address", hintText: "Your Email Address", controller: email,),
+            CustomTextFormField(title: "Password", hintText: "Enter Password", isHidden: true, controller: pw,),
+            CustomTextFormField(title: "Confirm Password", hintText: "Re-enter Password", isHidden: true, controller: cpw,)
           ],
         ),
       );
@@ -39,7 +59,7 @@ class _VendorSignUpPageState extends State<VendorSignUpPage> {
           height: 55,
           child: TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/vendor-login');
+              _register();
             },
             style: TextButton.styleFrom(
                 backgroundColor: warnaCoklat,

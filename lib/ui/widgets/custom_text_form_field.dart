@@ -7,11 +7,15 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final bool isHidden;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
+
   const CustomTextFormField(
       {super.key,
       required this.title,
       required this.hintText,
-      this.isHidden = false, this.controller});
+      this.isHidden = false,
+      this.controller,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(defaultRadius),
                     borderSide: BorderSide(color: warnaCoklat, width: 2))),
             controller: controller,
+            validator: validator,
           ),
         ],
       ),

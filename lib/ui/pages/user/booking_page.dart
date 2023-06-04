@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:travelgo/models/user_model.dart';
+import 'package:travelgo/services/user_service.dart';
+import 'package:travelgo/shared/api_response.dart';
 import 'package:travelgo/shared/theme.dart';
+import 'package:travelgo/ui/pages/select_role_page.dart';
 import 'package:travelgo/ui/pages/user/payment_page.dart';
 import 'package:travelgo/ui/widgets/custom_button.dart';
 import 'package:travelgo/ui/widgets/custom_text_form_field.dart';
@@ -15,15 +19,42 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
-  List listGoing = [
-    {"name": "siapa hayo", "nik": 1234567}
-  ];
+  User? user;
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  void getUser() async {
+    ApiResponse res = await getDetailUser();
+    if (res.error == null) {
+      setState(() {
+        user = res.data as User;
+      });
+    } else if (res.error == "Unauthorized") {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => SelectRolePage()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${res.error}")));
+    }
+  }
 
   var nameInput = TextEditingController();
   var nikInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    List listGoing = [
+      {"name": "sjf", "nik": 1234567}
+    ];
+    print(user?.name);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

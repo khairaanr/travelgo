@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:travelgo/ui/pages/admin/admin_login_page.dart';
-import 'package:travelgo/ui/pages/admin/admin_signup_page.dart';
 import 'package:travelgo/ui/pages/get_started_page.dart';
 import 'package:travelgo/ui/pages/select_role_page.dart';
 import 'package:travelgo/ui/pages/splash_page.dart';
@@ -22,18 +20,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // onGenerateRoute: (settings) {
+      //   switch (settings.name) {
+      //     case '/detail-page':
+      //       return PageTransition(
+      //           child: DetailPage(),
+      //           type: PageTransitionType.rightToLeftWithFade,
+      //           duration: Duration(milliseconds: 400),
+      //           reverseDuration: Duration(milliseconds: 400));
+      //   }
+      // },
+      home: SplashPage(),
       routes: {
-        '/':(context) => SplashPage(),
-        '/get-started':(context) => GetStartedPage(),
-        '/roles':(context) => SelectRolePage(),
-        '/user-login':(context) => UserLoginPage(),
-        '/user-signup':(context) => UserSignUpPage(),
-        '/main':(context) => UserMainPage(),
-        '/admin-login':(context) => AdminLoginPage(),
-        '/admin-signup':(context) => AdminSignUpPage(),
-        '/vendor-login':(context) => VendorLoginPage(),
-        '/vendor-signup':(context) => VendorSignUpPage(),
-        '/main-vendor':(context) => VendorMainPage(),
+        '/get-started': (context) => GetStartedPage(),
+        '/roles': (context) => SelectRolePage(),
+        '/user-login': (context) => UserLoginPage(),
+        '/user-signup': (context) => UserSignUpPage(),
+        '/main': (context) => UserMainPage(),
+        '/vendor-login': (context) => VendorLoginPage(),
+        '/vendor-signup': (context) => VendorSignUpPage(),
+        '/main-vendor': (context) => VendorMainPage(),
       },
     );
   }

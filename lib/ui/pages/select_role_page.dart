@@ -65,26 +65,6 @@ class _SelectRolePageState extends State<SelectRolePage> {
                     height: 56,
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/admin-login');
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: warnaBg, width: 2),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(defaultRadius))),
-                      child: Text(
-                        "Admin",
-                        style: whiteTextStyle.copyWith(fontWeight: bold),
-                      ),
-                    )),
-                SizedBox(
-                  height: 16,
-                ),
-                SizedBox(
-                    width: 300,
-                    height: 56,
-                    child: OutlinedButton(
-                      onPressed: () {
                         Navigator.pushNamed(context, '/vendor-login');
                       },
                       style: OutlinedButton.styleFrom(

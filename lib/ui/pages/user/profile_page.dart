@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelgo/services/user_service.dart';
 
 import '../../../shared/theme.dart';
 
@@ -30,7 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: warnaMerah, borderRadius: BorderRadius.circular(defaultRadius)
               ),
               child: TextButton(onPressed: () {
-                Navigator.pushNamed(context, '/roles');
+                setState(() {
+                  logout();
+                });
               }, child: Text("Logout", style: whiteTextStyle,)))
           ],
         ),

@@ -9,26 +9,25 @@ import 'package:travelgo/ui/widgets/custom_back_button.dart';
 import 'package:travelgo/ui/widgets/custom_button.dart';
 import 'package:travelgo/ui/widgets/detail_book.dart';
 import 'package:travelgo/ui/widgets/detail_item.dart';
+import 'package:intl/intl.dart';
+
+import '../../../models/package_model.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  final Package arguments;
+  const DetailPage({super.key, required this.arguments});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
-  List imgList = [
-    {"id": 1, "path": "assets/merapi.png"},
-    {"id": 2, "path": "assets/merapii.png"},
-    {"id": 3, "path": "assets/merapiii.png"},
-  ];
-
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    Package package = widget.arguments;
     return Scaffold(
       body: ListView(
         physics: BouncingScrollPhysics(),
@@ -38,12 +37,12 @@ class _DetailPageState extends State<DetailPage> {
               Stack(
                 children: [
                   CarouselSlider(
-                    items: imgList
+                    items: package.galleries
                         .map((item) => Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: AssetImage(item['path']),
+                                      image: AssetImage(item.image),
                                       fit: BoxFit.cover)),
                             ))
                         .toList(),
@@ -70,7 +69,7 @@ class _DetailPageState extends State<DetailPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Center(child: buildIndicator()),
+                          Center(child: buildIndicator(package.galleries.length)),
                         ],
                       ))
                 ],
@@ -85,7 +84,7 @@ class _DetailPageState extends State<DetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Trip",
+                        package.title,
                         style: blackTextStyle.copyWith(
                             fontWeight: bold, fontSize: 32),
                       ),
@@ -93,7 +92,7 @@ class _DetailPageState extends State<DetailPage> {
                         height: 12,
                       ),
                       Text(
-                        "Location",
+                        package.location,
                         style: greyTextStyle.copyWith(
                             fontSize: 16, fontWeight: semibold),
                       ),
@@ -102,20 +101,20 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           DetailItem(
                             title: "Featured Ticket",
-                            detail: "Snorkeling",
+                            detail: package.featuredEvent,
                             iconUrl: Icon(Iconsax.ticket),
                           ),
                           DetailItem(
                             title: "Language",
-                            detail: "Indonesia",
+                            detail: package.language,
                             iconUrl: Icon(Iconsax.messages),
                           ),
                           DetailItem(
                             title: "Foods",
-                            detail: "Bali Foods",
+                            detail: package.foods,
                             iconUrl: Icon(Iconsax.shop),
                           )
                         ],
@@ -132,7 +131,7 @@ class _DetailPageState extends State<DetailPage> {
                         height: 16,
                       ),
                       Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                        package.about,
                         style: blackTextStyle,
                       ),
                       SizedBox(
@@ -162,10 +161,15 @@ class _DetailPageState extends State<DetailPage> {
                               SizedBox(
                                 height: 24,
                               ),
-                              DetailBook(title: "Departure", detail: "tanggal"),
-                              DetailBook(title: "Duration", detail: "durasi"),
-                              DetailBook(title: "Type", detail: "gatau apaan"),
-                              DetailBook(title: "Price", detail: "5M"),
+                              DetailBook(
+                                  title: "Departure",
+                                  detail: DateFormat.yMMMMd().format(package.departureDate)),
+                              DetailBook(
+                                  title: "Duration", detail: package.duration),
+                              DetailBook(title: "Type", detail: package.type),
+                              DetailBook(
+                                  title: "Price",
+                                  detail: package.price.toString()),
                               SizedBox(
                                 height: 24,
                               ),
@@ -175,7 +179,11 @@ class _DetailPageState extends State<DetailPage> {
                                   onPressed: () {
                                     Navigator.push(
                                         context,
-                                        PageTransition(child: BookingPage(), type: PageTransitionType.fade, duration: Duration(milliseconds: 500)));
+                                        PageTransition(
+                                            child: BookingPage(),
+                                            type: PageTransitionType.fade,
+                                            duration:
+                                                Duration(milliseconds: 500)));
                                   })
                             ],
                           ),
@@ -190,9 +198,9 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget buildIndicator() => AnimatedSmoothIndicator(
+  Widget buildIndicator(int count) => AnimatedSmoothIndicator(
         activeIndex: currentIndex,
-        count: imgList.length,
+        count: count,
         effect: ScrollingDotsEffect(
             dotColor: warnaBg.withOpacity(0.5),
             activeDotColor: warnaBg,

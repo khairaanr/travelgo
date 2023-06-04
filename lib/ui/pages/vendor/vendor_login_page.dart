@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgo/ui/widgets/custom_button.dart';
 import 'package:travelgo/ui/widgets/custom_text_form_field.dart';
 import 'package:travelgo/ui/widgets/title.dart';
 
+import '../../../models/user_model.dart';
+import '../../../services/user_service.dart';
+import '../../../shared/api_response.dart';
 import '../../../shared/theme.dart';
 import '../../widgets/role_title.dart';
 
@@ -14,6 +18,26 @@ class VendorLoginPage extends StatefulWidget {
 }
 
 class _VendorLoginPageState extends State<VendorLoginPage> {
+  TextEditingController email = TextEditingController();
+  TextEditingController pw = TextEditingController();
+
+  void _loginVendor() async {
+    ApiResponse res = await login(email.text, pw.text, "VENDOR");
+    if (res.error == null) {
+      saveAndRedirectToHome(res.data as User);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${res.error}")));
+    }
+  }
+
+  void saveAndRedirectToHome(User user) async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString("token", user.token ?? "");
+    await pref.setInt("userId", user.id ?? 0);
+    Navigator.pushNamedAndRemoveUntil(context, '/main-vendor', (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget inputSection() {
@@ -21,9 +45,9 @@ class _VendorLoginPageState extends State<VendorLoginPage> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         margin: EdgeInsets.only(top: 30),
         child: Column(
-          children: const [
-            CustomTextFormField(title: "Email Address", hintText: "Your Email Address"),
-            CustomTextFormField(title: "Password", hintText: "Enter Password", isHidden: true,)
+          children: [
+            CustomTextFormField(title: "Email Address", hintText: "Your Email Address", controller: email,),
+            CustomTextFormField(title: "Password", hintText: "Enter Password", isHidden: true, controller: pw,)
           ],
         ),
       );
@@ -31,7 +55,7 @@ class _VendorLoginPageState extends State<VendorLoginPage> {
 
     Widget submitButton() {
       return CustomButton(text: "Login", textSize: 16, onPressed: () {
-        Navigator.pushNamed(context, '/main-vendor');
+        _loginVendor();
       },
       margin: EdgeInsets.symmetric(horizontal: 20),);
     }

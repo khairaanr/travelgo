@@ -34,7 +34,7 @@ class _VendorLoginPageState extends State<VendorLoginPage> {
   void saveAndRedirectToHome(User user) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("token", user.token ?? "");
-    await pref.setInt("userId", user.id ?? 0);
+    await pref.setInt("userId", user.id);
     Navigator.pushNamedAndRemoveUntil(context, '/main-vendor', (route) => false);
   }
 

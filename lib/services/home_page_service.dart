@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:travelgo/shared/constant.dart';
+
 import '../models/package_model.dart';
 import 'package:http/http.dart' as http;
 
 class HomePageService {
   Future<List<Package>> getTravelPackage() async {
     final res =
-        await http.get(Uri.parse('http://192.168.0.194:8000/api/packages'));
+        await http.get(Uri.parse(getPackagesURL));
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       var parsed = data['items'].cast<Map<String, dynamic>>();

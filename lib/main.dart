@@ -20,16 +20,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // onGenerateRoute: (settings) {
-      //   switch (settings.name) {
-      //     case '/detail-page':
-      //       return PageTransition(
-      //           child: DetailPage(),
-      //           type: PageTransitionType.rightToLeftWithFade,
-      //           duration: Duration(milliseconds: 400),
-      //           reverseDuration: Duration(milliseconds: 400));
-      //   }
-      // },
       home: SplashPage(),
       routes: {
         '/get-started': (context) => GetStartedPage(),

@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:travelgo/services/transaction_service.dart';
 import 'package:travelgo/shared/theme.dart';
 import 'package:travelgo/ui/widgets/custom_button.dart';
 import 'package:travelgo/ui/widgets/custom_payment_dialog.dart';
 
+import '../../../models/transaction_model.dart';
+import '../../../shared/api_response.dart';
+
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+  final Transaction transaction;
+  const PaymentPage({super.key, required this.transaction});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  Future _update(int id, String status, String message) async {
+    ApiResponse res = await updateStatus(id, status);
+
+    if (res.error == null) {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return CustomPaymentDialog(
+              title: message,
+            );
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${res.error}")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Transaction transaction = widget.transaction;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -39,14 +63,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   text: "Upload",
                   textSize: 16,
                   onPressed: () {
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomPaymentDialog(
-                            title: "Payment Success.",
-                          );
-                        });
+                    _update(transaction.id, "SUCCESS", "Payment Success.");
                   }),
               SizedBox(
                 height: 16,
@@ -81,12 +98,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                           BorderRadius.circular(defaultRadius)),
                                   child: TextButton(
                                       onPressed: () {
-                                        showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return CustomPaymentDialog(title: "Booking Cancelled.");
-                                            });
+                                        _update(transaction.id, "CANCELLED", "Booking Cancelled.");
+                                        Navigator.pushNamed(context, '/main');
                                       },
                                       child: Text(
                                         "Cancel Booking",

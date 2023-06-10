@@ -1,15 +1,15 @@
 class User {
-  int? id;
-  String? name;
-  String? email;
-  String? role;
+  int id;
+  String name;
+  String email;
+  String role;
   String? token;
 
   User({
-    this.id,
-    this.name,
-    this.email,
-    this.role,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.role,
     this.token
   });
 
@@ -18,7 +18,7 @@ class User {
       id: json['user']['id'],
       name: json['user']['name'],
       email: json['user']['email'],
-      role: json['user']['role'],
+      role: json['user']['roles'],
       token: json['token']
     );
   }

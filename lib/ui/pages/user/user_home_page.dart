@@ -4,6 +4,9 @@ import 'package:travelgo/models/package_model.dart';
 import 'package:travelgo/services/home_page_service.dart';
 import 'package:travelgo/ui/pages/user/user_detail_page.dart';
 
+import '../../../models/user_model.dart';
+import '../../../services/user_service.dart';
+import '../../../shared/api_response.dart';
 import '../../../shared/theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,16 +56,32 @@ class _HomePageState extends State<HomePage> {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
+                              User vendor = User(id: 999, name: "xxx", email: "xxx", role: "xxx");
+
+                              Future<void> fetchUser() async {
+                                ApiResponse res = await fetchUserById(snapshot.data![index].vendorId);
+                                if (res.error == null) {
+                                  vendor = res.data as User;
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("${res.error}")));
+                                }
+                              }
+
                               return Column(
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
+                                      await fetchUser();
+                                      print(vendor.name);
+
                                       Navigator.push(
                                           context,
                                           PageTransition(
                                               child: DetailPage(
                                                 arguments:
                                                     snapshot.data![index],
+                                                vendor: vendor,
                                               ),
                                               type: PageTransitionType
                                                   .rightToLeftWithFade,

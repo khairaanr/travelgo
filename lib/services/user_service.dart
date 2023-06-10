@@ -13,11 +13,12 @@ Future<ApiResponse> login(String email, String password, String role) async {
   try {
     final response = await http.post(url,
         headers: {"Accept": "application/json"},
-        body: {"email": email, "password": password, "roles" : role});
+        body: {"email": email, "password": password, "roles": role});
 
     switch (response.statusCode) {
       case 200:
         apiResponse.data = User.fromJson(jsonDecode(response.body));
+        apiResponse.error = null;
         break;
       case 422:
         final errors = jsonDecode(response.body)['errors'];
@@ -33,7 +34,6 @@ Future<ApiResponse> login(String email, String password, String role) async {
   } catch (e) {
     apiResponse.error = "Server error";
   }
-
   return apiResponse;
 }
 
@@ -78,13 +78,15 @@ Future<ApiResponse> register(
 Future<ApiResponse> getDetailUser() async {
   var url = Uri.parse(userURL);
   ApiResponse apiResponse = ApiResponse();
-  
+
   try {
     String token = await getToken();
-    final response = await http.post(url, 
-    headers: {"Accept": "application/json", "Authorization" : "Bearer $token"});
+    final response = await http.post(url, headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer $token"
+    });
 
-    switch(response.statusCode){
+    switch (response.statusCode) {
       case 200:
         apiResponse.data = User.fromJson(jsonDecode(response.body));
         break;
@@ -118,4 +120,21 @@ Future<String> getUserId() async {
 Future<bool> logout() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   return pref.remove("token");
+}
+
+Future<ApiResponse> fetchUserById(int id) async {
+  var url = Uri.parse("$getUserByIdURL/$id");
+  ApiResponse apiResponse = ApiResponse();
+
+  try {
+    final res = await http.post(url, headers: {"Accept": "application/json"});
+    switch (res.statusCode) {
+      case 200 :
+        apiResponse.data = User.fromJson(jsonDecode(res.body));
+        break;
+    }
+  } catch (e) {
+    apiResponse.error = "Error";
+  }
+  return apiResponse;
 }

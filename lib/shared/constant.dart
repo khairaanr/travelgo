@@ -8,4 +8,5 @@ String makeTransactionURL = baseURL + "/make-transaction";
 String makeTransactionDetailURL = baseURL + "/make-detailTransaction";
 String updateTransactionURL = baseURL + "/updateStatus";
 String getHistoryURL = baseURL + "/getHistory";
+String getVendorPackagesURL = baseURL + "/getVendorPackages";
 

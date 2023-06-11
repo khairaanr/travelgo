@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:travelgo/services/user_service.dart';
 import 'package:travelgo/shared/api_response.dart';
+import '../../models/user_model.dart';
 import '../widgets/title.dart';
 
 class SplashPage extends StatefulWidget {
@@ -23,8 +24,11 @@ class _SplashPageState extends State<SplashPage> {
       });
     } else {
       ApiResponse res = await getDetailUser();
-      if (res.error == null) {
+      var data = res.data as User;
+      if (res.error == null && data.role == "USER") {
         Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+      } else if (res.error == null && data.role == "VENDOR"){
+        Navigator.pushNamedAndRemoveUntil(context, '/main-vendor', (route) => false);
       } else if (res.error == "Unauthorized") {
         Timer(Duration(seconds: 3), () {
           Navigator.pushNamedAndRemoveUntil(

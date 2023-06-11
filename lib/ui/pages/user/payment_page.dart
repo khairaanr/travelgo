@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelgo/services/detail_transaction_service.dart';
 import 'package:travelgo/services/transaction_service.dart';
 import 'package:travelgo/shared/theme.dart';
 import 'package:travelgo/ui/widgets/custom_button.dart';
@@ -8,8 +9,10 @@ import '../../../models/transaction_model.dart';
 import '../../../shared/api_response.dart';
 
 class PaymentPage extends StatefulWidget {
+  final List listGoing;
   final Transaction transaction;
-  const PaymentPage({super.key, required this.transaction});
+  const PaymentPage(
+      {super.key, required this.transaction, required this.listGoing});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -34,9 +37,24 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
+  Future makeDetailTransaction(String transactionId, List listGoing) async {
+    for (int i = 0; i < listGoing.length; i++) {
+      ApiResponse res = await detailTransaction(
+          transactionId, listGoing[i]['name'], listGoing[i]['nik']);
+
+      if (res.error == null) {
+        print(res.data);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("${res.error}")));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Transaction transaction = widget.transaction;
+    List listGoing = widget.listGoing;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -63,6 +81,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   text: "Upload",
                   textSize: 16,
                   onPressed: () {
+                    makeDetailTransaction(transaction.id.toString(), listGoing);
                     _update(transaction.id, "SUCCESS", "Payment Success.");
                   }),
               SizedBox(
@@ -98,7 +117,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                           BorderRadius.circular(defaultRadius)),
                                   child: TextButton(
                                       onPressed: () {
-                                        _update(transaction.id, "CANCELLED", "Booking Cancelled.");
+                                        _update(transaction.id, "CANCELLED",
+                                            "Booking Cancelled.");
                                         Navigator.pushNamed(context, '/main');
                                       },
                                       child: Text(

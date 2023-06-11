@@ -1,4 +1,4 @@
-String baseURL = "http://192.168.0.199:8000/api";
+String baseURL = "http://192.168.0.197:8000/api";
 String loginURL = baseURL + "/login";
 String registerURL = baseURL +"/register";
 String userURL = baseURL + "/user";
@@ -7,4 +7,5 @@ String getPackagesURL = baseURL + "/packages";
 String makeTransactionURL = baseURL + "/make-transaction";
 String makeTransactionDetailURL = baseURL + "/make-detailTransaction";
 String updateTransactionURL = baseURL + "/updateStatus";
+String getHistoryURL = baseURL + "/getHistory";
 

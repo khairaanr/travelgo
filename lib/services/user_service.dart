@@ -112,14 +112,14 @@ Future<String> getToken() async {
   return pref.getString("token") ?? "";
 }
 
-Future<String> getUserId() async {
+Future<int> getUserId() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  return pref.getString("userId") ?? "";
+  return pref.getInt("userId") ?? 0;
 }
 
 Future<bool> logout() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  return pref.remove("token");
+  return await pref.remove("token");
 }
 
 Future<ApiResponse> fetchUserById(int id) async {

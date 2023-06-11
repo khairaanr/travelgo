@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:travelgo/services/user_service.dart';
 import 'package:travelgo/shared/theme.dart';
 import 'package:travelgo/ui/pages/user/history_page.dart';
 import 'package:travelgo/ui/pages/user/profile_page.dart';

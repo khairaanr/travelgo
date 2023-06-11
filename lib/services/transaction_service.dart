@@ -10,7 +10,6 @@ Future<ApiResponse> transaction(
     int packageId, int userId, int total, String status) async {
   var url = Uri.parse(makeTransactionURL);
   ApiResponse apiResponse = ApiResponse();
-  print(makeTransactionURL);
 
   try {
     final response = await http.post(url, headers: {

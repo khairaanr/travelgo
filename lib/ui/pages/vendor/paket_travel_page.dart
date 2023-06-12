@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:travelgo/shared/constant.dart';
-import 'package:travelgo/ui/widgets/custom_button.dart';
+import 'package:travelgo/ui/pages/vendor/package_detail.dart';
 
 import '../../../models/package_model.dart';
 import '../../../services/user_service.dart';
@@ -63,7 +61,7 @@ class _PaketTravelPageState extends State<PaketTravelPage> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          print(snapshot.data![index].id);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPackagePage(package: snapshot.data![index],)));
                         },
                         child: Card(
                           margin: EdgeInsets.only(bottom: 16),

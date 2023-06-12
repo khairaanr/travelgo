@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:travelgo/services/user_service.dart';
-import 'package:travelgo/ui/pages/select_role_page.dart';
 
 import '../../../models/user_model.dart';
+import '../../../services/user_service.dart';
 import '../../../shared/api_response.dart';
 import '../../../shared/theme.dart';
+import '../select_role_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class VendorProfilePage extends StatefulWidget {
+  const VendorProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<VendorProfilePage> createState() => _VendorProfilePage();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _VendorProfilePage extends State<VendorProfilePage> {
   User user = User(id: 999, name: "xxx", email: "email", role: "role");
 
   Future<User?> fetchUser() async {

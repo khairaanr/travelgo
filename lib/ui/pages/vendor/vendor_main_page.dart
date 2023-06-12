@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:travelgo/ui/pages/vendor/gallery_travel_page.dart';
+import 'package:travelgo/ui/pages/vendor/vendor_profile_page.dart';
 import 'package:travelgo/ui/pages/vendor/paket_travel_page.dart';
 
 import '../../../shared/theme.dart';
@@ -15,7 +15,7 @@ class VendorMainPage extends StatefulWidget {
 class _VendorMainPageState extends State<VendorMainPage> {
   List<Widget> pages = <Widget>[
     PaketTravelPage(),
-    GalleryTravelPage()
+    VendorProfilePage()
   ];
 
   int _selectedIndex = 0;
@@ -31,7 +31,7 @@ class _VendorMainPageState extends State<VendorMainPage> {
       elevation: 0,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Paket"),
-        BottomNavigationBarItem(icon: Icon(Iconsax.gallery), label: "Gallery"),
+        BottomNavigationBarItem(icon: Icon(Iconsax.user), label: "Gallery"),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: warnaCoklat,

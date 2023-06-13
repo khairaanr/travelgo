@@ -9,8 +9,9 @@ import '../../../models/history_model.dart';
 
 class HistoryPage extends StatefulWidget {
   // final String userId;
-  const HistoryPage({super.key, 
-  // required this.
+  const HistoryPage({
+    super.key,
+    // required this.
   });
 
   @override
@@ -18,7 +19,6 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-
   Future<List<History>> _getHistory() async {
     int userid = await getUserId();
     return getHistory(userid);
@@ -47,7 +47,9 @@ class _HistoryPageState extends State<HistoryPage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: CircularProgressIndicator(color: warnaCoklat,),
+                      child: CircularProgressIndicator(
+                        color: warnaCoklat,
+                      ),
                     );
                   }
 
@@ -70,35 +72,52 @@ class _HistoryPageState extends State<HistoryPage> {
                                   border: Border.all(color: warnaCoklat),
                                   borderRadius:
                                       BorderRadius.circular(defaultRadius)),
-                              child: ListTile(
-                                title: Text(
-                                  snapshot.data![index].transactionStatus,
-                                  style: blackTextStyle.copyWith(
-                                      fontWeight: semibold, fontSize: 16),
-                                ),
-                                subtitle: Text(
-                                  DateFormat.yMMMMd().add_jm()
-                                      .format(snapshot.data![index].updatedAt),
-                                  style: greyTextStyle.copyWith(
-                                      fontWeight: medium),
-                                ),
-                                trailing: snapshot
-                                            .data![index].transactionStatus ==
-                                        "SUCCESS"
-                                    ? Icon(
-                                        Iconsax.tick_circle,
-                                        color: Colors.green,
-                                      )
-                                    : snapshot.data![index].transactionStatus ==
-                                            "PENDING"
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      snapshot.data![index].transactionStatus,
+                                      style: blackTextStyle.copyWith(
+                                          fontWeight: semibold, fontSize: 16),
+                                    ),
+                                    subtitle: Text(
+                                      DateFormat.yMMMMd().add_jm().format(
+                                          snapshot.data![index].updatedAt),
+                                      style: greyTextStyle.copyWith(
+                                          fontWeight: medium),
+                                    ),
+                                    trailing: snapshot.data![index]
+                                                .transactionStatus ==
+                                            "SUCCESS"
                                         ? Icon(
-                                            Iconsax.clock,
-                                            color: Colors.orange,
+                                            Iconsax.tick_circle,
+                                            color: Colors.green,
                                           )
-                                        : Icon(
-                                            Iconsax.close_circle,
-                                            color: Colors.red,
-                                          ),
+                                        : snapshot.data![index]
+                                                    .transactionStatus ==
+                                                "PENDING"
+                                            ? Icon(
+                                                Iconsax.clock,
+                                                color: Colors.orange,
+                                              )
+                                            : Icon(
+                                                Iconsax.close_circle,
+                                                color: Colors.red,
+                                              ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "IDR ${NumberFormat('#,##0', 'en_US').format(snapshot.data![index].transactionTotal)}",
+                                        style: blackTextStyle.copyWith(
+                                            fontSize: 14, fontWeight: semibold),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 12,)
+                                ],
                               ),
                             ),
                             SizedBox(

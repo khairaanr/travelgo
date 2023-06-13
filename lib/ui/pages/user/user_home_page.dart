@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:travelgo/models/package_model.dart';
 import 'package:travelgo/services/home_page_service.dart';
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(color: warnaCoklat,),
                             );
                           }
 
@@ -150,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                                                     style: whiteTextStyle,
                                                   ),
                                                   Text(
-                                                    ("IDR ${snapshot.data![index].price}"),
+                                                    ("IDR ${NumberFormat('#,##0', 'en_US').format(snapshot.data![index].price)}"),
                                                     style: whiteTextStyle,
                                                   )
                                                 ],

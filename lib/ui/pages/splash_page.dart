@@ -15,6 +15,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  
   void _loadUserInfo() async {
     String token = await getToken();
     if (token == '') {

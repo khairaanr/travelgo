@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:travelgo/models/user_model.dart';
 import 'package:travelgo/services/transaction_service.dart';
@@ -222,7 +223,7 @@ class _BookingPageState extends State<BookingPage> {
                                 detail: "${listGoing.length} person"),
                             DetailBook(
                                 title: "Trip Price",
-                                detail: "${package.price} / pax"),
+                                detail: "IDR ${NumberFormat('#,##0', 'en_US').format(package.price)} / pax"),
                             SizedBox(
                               height: 12,
                             ),
@@ -235,7 +236,7 @@ class _BookingPageState extends State<BookingPage> {
                               height: 12,
                             ),
                             DetailBook(
-                                title: "Total", detail: total.toString()),
+                                title: "Total", detail: "IDR ${NumberFormat('#,##0', 'en_US').format(total)}"),
                             SizedBox(
                               height: 12,
                             ),
@@ -274,7 +275,7 @@ class _BookingPageState extends State<BookingPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Nama vendor",
+                                      vendor.name,
                                       style: blackTextStyle.copyWith(
                                           fontWeight: bold, fontSize: 20),
                                     ),

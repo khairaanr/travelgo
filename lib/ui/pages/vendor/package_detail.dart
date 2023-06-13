@@ -108,6 +108,11 @@ class _DetailPackagePageState extends State<DetailPackagePage> {
             SizedBox(
               height: 16,
             ),
+            Text(
+              "MEMBERS",
+              style:
+                  blackTextStyle.copyWith(fontSize: 16, fontWeight: semibold),
+            ),
             Expanded(
               child: FutureBuilder<List<VendorTransaction>>(
                 future: getTransactionById(package.id),
@@ -119,81 +124,29 @@ class _DetailPackagePageState extends State<DetailPackagePage> {
                       ),
                     );
                   }
-
+        
                   if (!snapshot.hasData) {
                     return Center(
                       child: Text("Empty"),
                     );
                   }
-
+        
+                  // return generateDetail(snapshot.data[index].id);
                   return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "MEMBERS",
-                            style: blackTextStyle.copyWith(
-                                fontSize: 16, fontWeight: semibold),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          generateDetail(snapshot.data![index].id)
-                          // FutureBuilder<List<VendorTransactionDetail>>(
-                          //   future: getDetailTransactionById(
-                          //       snapshot.data![index].id),
-                          //   builder: (context, data) {
-                          //     if (data.connectionState ==
-                          //         ConnectionState.waiting) {
-                          //       return Center(
-                          //         child: CircularProgressIndicator(
-                          //           color: warnaCoklat,
-                          //         ),
-                          //       );
-                          //     }
-
-                          //     if (!data.hasData) {
-                          //       return Center(
-                          //         child: Text("Empty"),
-                          //       );
-                          //     }
-
-                          //     return ListView.builder(
-                          //       shrinkWrap: true,
-                          //       itemCount: data.data!.length,
-                          //       scrollDirection: Axis.vertical,
-                          //       itemBuilder: (context, i) {
-                          //         return ListTile(
-                          //           leading: CircleAvatar(
-                          //             backgroundColor: warnaAbu,
-                          //             child: Text(
-                          //               data.data![i].name[0],
-                          //               style: blackTextStyle,
-                          //             ),
-                          //           ),
-                          //           title: Text(
-                          //             data.data![i].name,
-                          //             style: blackTextStyle.copyWith(
-                          //                 fontSize: 16, fontWeight: medium),
-                          //           ),
-                          //           subtitle: Text(
-                          //             "NIK : ${data.data![i].nik_ktp}",
-                          //             style: greyTextStyle.copyWith(
-                          //               fontSize: 14,
-                          //             ),
-                          //           ),
-                          //         );
-                          //       },
-                          //     );
-                          //   },
-                          // ),
-                        ],
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            generateDetail(snapshot.data![index].id),
+                            SizedBox(height: 16,),
+                            Container(decoration: BoxDecoration(color: warnaCoklat), height: 1.5,),
+                            SizedBox(height: 16,),
+                          ],
+                        ),
                       );
                     },
                   );
@@ -221,6 +174,7 @@ class _DetailPackagePageState extends State<DetailPackagePage> {
             ),
           );
         }
+        print(snapshot.data!.length);
 
         if (!snapshot.hasData) {
           return Center(
@@ -232,7 +186,6 @@ class _DetailPackagePageState extends State<DetailPackagePage> {
         return ListView.builder(
           shrinkWrap: true,
           itemCount: snapshot.data!.length,
-          scrollDirection: Axis.vertical,
           itemBuilder: (context, i) {
             return ListTile(
               leading: CircleAvatar(

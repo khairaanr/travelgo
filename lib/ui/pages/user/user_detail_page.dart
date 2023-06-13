@@ -191,7 +191,7 @@ class _DetailPageState extends State<DetailPage> {
                             DetailBook(title: "Type", detail: package.type),
                             DetailBook(
                                 title: "Price",
-                                detail: package.price.toString()),
+                                detail: "IDR ${NumberFormat('#,##0', 'en_US').format(package.price)}"),
                             SizedBox(
                               height: 24,
                             ),
